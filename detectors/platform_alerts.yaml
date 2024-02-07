@@ -7,4 +7,4 @@ organization-filtering:
   type: blacklist
   organizations:
     - "hunters"
-    - "google"
+    - "amazon"
