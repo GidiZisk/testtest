@@ -67,12 +67,12 @@ jobs:
           git add .
           git commit -am "Apply changes after parsing"
       - name: Push changes to main
-        uses: ad-m/github-push-action@main
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push changes to test
-        uses: ad-m/github-push-action@main
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: test
