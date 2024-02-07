@@ -1,0 +1,78 @@
+name: update_db on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**/*' # Trigger on any file change
+
+jobs:
+  update-db:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      
+      - name: files that changed
+        id: changed-files
+        run: |
+          # Get the list of changed files in the pull request
+          for file in $(git diff --name-only origin/master HEAD --diff-filter=M); do
+            # Get the old version of the file
+            git show  origin/master:"$file" > temp_before_file
+            # Get the new version of the file
+            git show HEAD:"$file" > temp_after_file
+            # Run the update_db script on both versions of the file
+            python update_db.py "temp_before_file" "temp_after_file"
+            rm temp_before_file temp_after_file
+          done
+      - name: files that added
+        id: added-files
+        run: |
+          # Get the list of changed files in the pull request
+          for file in $(git diff --name-only origin/master HEAD --diff-filter=A); do
+            # Get the new version of the file
+            git show HEAD:"$file" > temp_after_file
+            # Run the update_db script on both versions of the file
+            python update_db.py "" "temp_after_file"
+            rm temp_after_file
+          done
+
+      - name: files that deleted
+        id: deleted-files
+        run: |
+          # Get the list of changed files in the pull request
+          for file in $(git diff --name-only origin/master HEAD --diff-filter=D); do
+            # Get the old version of the file
+            git show  origin/master:"$file" > temp_before_file
+            # Run the update_db script on both versions of the file
+            python update_db.py "temp_before_file" ""
+            rm temp_before_file
+          done
+          
+      - name: Commit changes
+        run: |
+          git config --global user.email "github-actions@users.noreply.github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -am "Apply changes after parsing"
+      - name: Push changes to master
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push changes to test
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: test
