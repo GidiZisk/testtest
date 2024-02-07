@@ -27,9 +27,9 @@ jobs:
         id: changed-files
         run: |
           # Get the list of changed files in the pull request
-          for file in $(git diff --name-only origin/master HEAD --diff-filter=M); do
+          for file in $(git diff --name-only origin/main HEAD --diff-filter=M); do
             # Get the old version of the file
-            git show  origin/master:"$file" > temp_before_file
+            git show  origin/main:"$file" > temp_before_file
             # Get the new version of the file
             git show HEAD:"$file" > temp_after_file
             # Run the update_db script on both versions of the file
@@ -40,7 +40,7 @@ jobs:
         id: added-files
         run: |
           # Get the list of changed files in the pull request
-          for file in $(git diff --name-only origin/master HEAD --diff-filter=A); do
+          for file in $(git diff --name-only origin/main HEAD --diff-filter=A); do
             # Get the new version of the file
             git show HEAD:"$file" > temp_after_file
             # Run the update_db script on both versions of the file
@@ -52,9 +52,9 @@ jobs:
         id: deleted-files
         run: |
           # Get the list of changed files in the pull request
-          for file in $(git diff --name-only origin/master HEAD --diff-filter=D); do
+          for file in $(git diff --name-only origin/main HEAD --diff-filter=D); do
             # Get the old version of the file
-            git show  origin/master:"$file" > temp_before_file
+            git show  origin/main:"$file" > temp_before_file
             # Run the update_db script on both versions of the file
             python update_db.py "temp_before_file" ""
             rm temp_before_file
@@ -66,13 +66,13 @@ jobs:
           git config --global user.name "GitHub Actions"
           git add .
           git commit -am "Apply changes after parsing"
-      - name: Push changes to master
-        uses: ad-m/github-push-action@master
+      - name: Push changes to main
+        uses: ad-m/github-push-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push changes to test
-        uses: ad-m/github-push-action@master
+        uses: ad-m/github-push-action@main
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: test
