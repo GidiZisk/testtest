@@ -1,0 +1,11 @@
+id: suspicious_signin
+
+description: |
+  This detector checks for suspicious sign-ins to the organization's accounts.
+
+organization-filtering:
+  type: whitelist
+  organizations:
+    - "hunters"
+    - "amazon"
+    - "databricks"

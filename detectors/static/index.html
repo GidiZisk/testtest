@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Syncing the UI with the Detection Engine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&family=Montserrat:wght@700&display=swap');
+        .content {
+            margin: 0 auto;
+            width: 50%;
+            font-family: 'Roboto', sans-serif;
+        }
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            font-size: 2.2em;
+        }
+    </style>
+</head>
+<body>
+<div>
+<h2 class="title"><strong>Syncing the UI with the Detection Engine</strong></h2>
+</div>
+<div class="content">
+<h4 style="text-align: center;"><strong>Project Description</strong></h4>
+<p>We currently have a detection engine that operates based on instructions found in YAML files. These instructions may include a whitelist or a blacklist of organizations. This guides the detection engine to decide which detector it should run for a particular organization.</p>
+<p>Simultaneously, our UI shows each organization which detectors are currently in operation for them. However, there's an issue: the UI doesn't always correctly show the information from the detection engine's configuration. In some cases, this could result in the UI displaying a detector as operating when it's not, due to being blacklisted in the detection engine's configuration.</p>
+<p>Your task is to find a way to make sure the detection engine's configuration and the UI are correctly synced. We want the UI to accurately show the status of the detectors for each organization, based on the settings from the detection engine's configuration.</p>
+</div>
+</body>
+</html>
