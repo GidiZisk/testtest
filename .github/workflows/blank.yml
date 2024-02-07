@@ -3,7 +3,7 @@ name: update_db on Pull Request
 on:
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - '**/*' # Trigger on any file change
 
